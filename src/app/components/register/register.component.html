@@ -1,0 +1,65 @@
+<app-navbar ></app-navbar>
+<div class="wrapper fadeInDown">
+  <div id="formContent">
+    <!-- Tabs Titles -->
+
+    <!-- Icon -->
+    <br>
+    <div class="fadeIn first">
+      <img src="assets\images\LogoColonial.png" id="icon" alt="User Icon" />
+    </div>
+
+    <!-- Login Form -->
+    <form [formGroup]="addUser" (ngSubmit)="SaveUser(addUser.value)" class="mt-2 row">
+      <div class="col-sm-6">
+      <input formControlName="Nombre" type="text" id="userName" class="fadeIn second" name="login" placeholder="Nombre Completo">
+      <span *ngIf="addUser.get('Nombre').hasError('required')&& addUser.get('Nombre').touched" class="text-danger">
+          El nombre completo <strong>es requerido</strong>
+      </span>
+     </div>
+      <div class="col-sm-6">
+      <input formControlName="Usuario"  type="text" id="login" class="fadeIn second" name="login" placeholder="Id Usuario">
+      <span *ngIf="addUser.get('Usuario').hasError('required') && addUser.get('Usuario').touched" class="text-danger">
+          El usuario <strong>es requerido</strong>
+      </span>
+     
+     </div>
+          <div class="col-sm-6">   
+      <input type="password" formControlName="Password" id="password" class="fadeIn third" name="pass" placeholder="Contraseña">
+      <span *ngIf="addUser.get('Password').hasError('required') && addUser.get('Password').touched" class="text-danger">
+          La contraseña <strong>es requerida</strong>
+      </span>
+      <span *ngIf="addUser.get('Password').hasError('minlength') && addUser.get('Password').touched" class="text-danger">
+          La contraseña debe tener como minimo <strong>4 caracteres</strong>
+      </span>
+      </div>
+ 
+      <div class="col-sm-6 d-flex justify-content-center ">
+          <select (change)="GetRolId($event.target.value)" class="form-select display-block fadeIn third" aria-label="Default select example">
+              <option selected> Selecciones el Rol </option>
+              <option [value]= 1>Administrador</option>
+              <option [value]= 2>Editor</option>
+              <option *ngIf=" UserTemp.Rol==3 " [value]= 3>Acceso Total</option>
+              <option *ngIf=" UserTemp.Rol==3 " [value]= 4>Compras</option>
+             
+            </select>       
+      </div>
+      <div class="col-sm-12 text-center ">
+          <select (change)="GetTiendaId($event.target.value)" class="form-select display-block fadeIn third" aria-label="Default select example">
+              <option selected> Seleccione el supermercado </option>
+              <option [value]= 1>Colonial #1</option>
+              <option [value]= 2>Colonial #2</option>
+              <option [value]= 3>Colonial #3</option>
+              <option [value]= 4>Colonial #4</option>
+             
+            </select>       
+      </div>
+      <div class="col-sm-12">  
+      <input   type="submit" class="fadeIn fourth"  value="Registrar Usuario">
+      </div>
+    </form>
+
+    
+
+  </div>
+</div>

@@ -1,0 +1,103 @@
+<app-navbar ></app-navbar>
+<h3 class="text-center mt-4">Usuarios pertenecientes a Colonial # {{this.user.StoreId}}</h3>
+
+<div class="card m-5">
+    <div class="card-body">
+        <table class="table table-striped justify-content-between">
+            <thead>
+            <tr>
+              <th class="text-center" scope="col">Id Usuario</th>
+              <th class="text-center" scope="col">Nombre Completo</th>
+              <th class="text-center" scope="col">Usuario</th>
+              <th class="text-center" scope="col">Rol</th>
+              <th class="text-center" scope="col">Estado</th>
+              <th class="text-center" scope="col">Editar</th>
+              <th class="text-center" scope="col">Eliminar</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let user of userS | orderBy:'State'; index as i ">
+              <th class="text-center"   scope="row">{{ user.userID }}</th>
+              <td class="text-center" >{{ user.NombreCompleto }}</td>
+              <td class="text-center" >{{ user.Usuario }}</td>
+              <td class="text-center" *ngIf="user.Rol==1">Administrador</td>
+              <td class="text-center" *ngIf="user.Rol==2">Editor</td>
+              <td class="text-center" *ngIf="user.Rol==3">Acceso Total</td>
+              <td class="text-center" *ngIf="user.Rol==4">Compras</td>
+              <td class="text-center" *ngIf="user.State==true"><span class="badge bg-success">Activo</span></td>
+              <td class="text-center" *ngIf="user.State==false"><span class="badge bg-danger">Inactivo</span></td>
+              <td ><button (click)="recibirDatosUser(user)" type="button" class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#EditarUsuario"><i class="material-icons">edit</i></button></td>
+              <td ><button [disabled]="user.State==false" (click)="EliminarUser(user.userID, State=false)" type="button" class="btn btn-danger" ><i class="material-icons">delete</i></button></td>
+              
+            </tr>
+            </tbody>
+          </table>
+    </div>
+  </div>
+
+<!-- Modal -->
+<div class="modal fade" id="EditarUsuario" tabindex="-1" aria-labelledby="EditarUsuario" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Editar usuario</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="EditUser">
+            <div class="row">
+                <div class="col-6">
+                    <label for="inputState" class="form-label">Nombre Completo</label>
+
+                  <input type="text" formControlName="NombreUsuario" [ngModel]="NombreTemp"  name="NombreTemp"  class="form-control" placeholder="Nombre" aria-label="First name">
+                </div>
+                <div class="col-6">
+                    <label for="inputState" class="form-label">Usuario</label>
+
+                  <input type="text" formControlName="Usuario" [ngModel]="UserTemp"  name="UserTemp" class="form-control" placeholder="Usuario" aria-label="Last name">
+                </div>
+                <div class="col-6">
+                    <label for="inputState" class="form-label">Contraseña</label>
+
+                  <input type="text" formControlName="Password" [ngModel]="PassTemp"  name="PassTemp" class="form-control" placeholder="Usuario" aria-label="Last name">
+                </div>
+                <div class="col-6 mt-1">
+                    <label for="inputState" class="form-label">Tienda Actual: Colonial {{StoreIDTemp}}</label>
+
+                    <select (change)='capturarStoreId($event.target.value)' id="inputState" class="form-select">
+                      <option [value]="1" selected>Colonial 1</option>
+                      <option [value]="2" >Colonial 2</option>
+                      <option [value]="3" >Colonial 3</option>
+                      <option [value]="2" >Colonial 4</option>
+                    </select>
+                  </div>
+                <div class="col-6 mt-1">
+                    <label for="inputState" class="form-label">Rol actual:
+                      {{RolTemp=== 1 ? 'Administrador': RolTemp===2 ? 'Editor' : RolTemp===3 ? 'Acceso Total' :'Compras'}}
+
+                    </label>
+
+                    <select (change)='capturarRol($event.target.value)' id="inputState" class="form-select">
+                      <option [value]="0" selected>Escoja un rol</option>
+                      <option [value]="1" >Gerencia</option>
+                      <option [value]="2" >Editor</option>
+                      <option [value]="3" >Administrador</option>
+                      <option [value]="4" >Compras</option>
+                    </select>
+                  </div>
+              </div>
+            </form>
+        </div>
+        <div *ngIf="ActiveTemp===false" class="form-check m-3">
+          <input (change)="Activar()" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+          <label class="form-check-label" for="flexCheckDefault">
+            Activar Usuario
+          </label>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" (click)="updateUser(EditUser.value)" data-bs-dismiss="modal" class="btn btn-primary">Guardar cambios</button>
+        </div>
+      </div>
+    </div>
+  </div>

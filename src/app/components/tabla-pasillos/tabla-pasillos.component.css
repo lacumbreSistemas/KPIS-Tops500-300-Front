@@ -1,0 +1,42 @@
+table {
+  width: 100%;
+  background: rgb(255, 255, 255);
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+.sinpadding  {
+  padding: 0;
+}
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+td, th {
+ 
+  padding:0px;
+}
+h5 {
+  color: rgb(255, 255, 255);  
+}
+h6 {
+  color: gray;  
+}
+
+.inputColor{
+    background-color: rgb(192, 192, 192);
+}
+
+
+
+@media only screen and (min-width: 315px) and (max-width: 800px)  {
+  p {
+   font-size: small;
+  }
+
+  .btn {
+
+    font-size: 10px;
+  }
+  
+}

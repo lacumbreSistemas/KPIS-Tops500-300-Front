@@ -1,0 +1,147 @@
+
+
+
+<ngx-spinner></ngx-spinner>
+
+
+
+
+<div class="card d-flex justify-content-center">
+  <div class="card-body">
+
+<div *ngIf="IdConteo==1" class="alert alert-primary text-center" role="alert">
+  <h4> Usted está en la medición de los productos Top 500 </h4>
+ </div>
+ <div *ngIf="IdConteo==2" class="alert alert-primary text-center" role="alert">
+   <h4>  Usted está en la medición de los productos Top 300 </h4>
+ </div>
+    <span class="badge bg-success m-1 text-center">Producto con inventario según sistema</span> <span class="badge bg-danger m-1 text-center">Producto sin inventario según sistema</span>
+
+  </div>
+</div>
+<ul ngbNav #nav="ngbNav" (click)="cargarLists()" [(activeId)]="active" class="nav-tabs justify-content-center  ">
+
+  <!-- Productos Todos -->
+  <li [ngbNavItem]="1">
+    <a class="text-center" ngbNavLink>Pendientes</a>
+    <ng-template ngbNavContent>
+<label for="formGroupExampleInput" class="form-label m-2 ">Buscar producto</label>
+<input  #SearchProducto id="search" [(ngModel)]="searchValue" name="searchValue"  type="text" class="form-control col-md-12" id="formGroupExampleInput" placeholder="Escriba el nombre del producto aquí">
+<h6 class="text-center mt-3">Hay {{ProductosTop.length}} productos en total</h6>
+<div *ngIf="ProductosTop==false" class="alert alert-info m-5" role="alert">
+  Aun no hay productos pendientes en esta lista
+</div>
+<div class="table-responsive">
+<table cellspacing="0" style="border-spacing: 0;" *ngIf="ProductosTop!=false"
+        class="table  table-striped  text-center">
+  <thead>
+  <tr>
+
+    <th scope="col">Producto</th>
+    <th scope="col">Código</th>
+    <th scope="col">Hay</th>
+    <th scope="col">No Hay</th>
+
+  </tr>
+
+  </thead>
+  <tbody class="mt-5"  >
+
+    <tr *ngFor="let producto of ProductosTop  | orderBy:'Description' | searchFilter: searchValue; index as i">
+
+      <td  *ngIf="producto.disponible==null && producto.Quantity>0"  > <span class="badge bg-success">{{ producto.Description }}</span> </td>
+      <td  *ngIf="producto.disponible==null && producto.Quantity<=0"  > <span class="badge bg-danger">{{ producto.Description }}</span> </td>
+      <td  *ngIf="producto.disponible==null"><p>{{ producto.ItemLookupCode }}</p></td>
+      <td  *ngIf="producto.disponible==null"  ><button type="button"  (click)="enviarAExistente(producto);reset()" class="btn btn-success"><i class="material-icons">done</i></button>
+      <td  *ngIf="producto.disponible==null"   ><button type="button"  (click)="enviarAFaltante(producto); reset()" class="btn btn-danger"><i class="material-icons">close</i></button>
+
+
+    </tr>
+    </tbody>1
+</table>
+</div>
+    </ng-template>
+  </li>
+
+<!-- Productos Faltantes -->
+  <li [ngbNavItem]="2">
+    <a class="d-flex justify-content-center" (click)="cargarLists()" ngbNavLink>Faltantes</a>
+    <ng-template ngbNavContent>
+      <label for="formGroupExampleInput" class="form-label m-2 ">Buscar producto</label>
+      <input id="search" #SearchProducto [(ngModel)]="searchValue" name="searchValue"  type="text" class="form-control col-md-12" id="formGroupExampleInput" placeholder="Escriba el nombre del producto aquí">
+
+<div *ngIf="ProductosFaltantes==false" class="alert alert-info m-5" role="alert">
+  Aun no hay productos faltantes en esta lista
+</div>
+
+<table *ngIf="ProductosFaltantes!=false" class="table table-striped  text-center">
+  <thead>
+  <tr>
+
+    <th scope="col">Producto</th>
+    <th scope="col">Código</th>
+    <th scope="col">Pendiente</th>
+    <th scope="col">Hay</th>
+
+  </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let faltante of ProductosFaltantes | orderBy:'Description'  | searchFilter: searchValue; index as i">
+
+      <td  *ngIf="faltante.disponible==false && faltante.Quantity>0"  > <span class="badge bg-success">{{ faltante.Description }}</span> </td>
+      <td  *ngIf="faltante.disponible==false && faltante.Quantity<=0"  > <span class="badge bg-danger">{{ faltante.Description }}</span> </td>
+
+      <td *ngIf="faltante.disponible ==false"  ><p>{{ faltante.ItemLookupCode }}</p></td>
+      <td *ngIf="faltante.disponible ==false"   ><button type="button"  (click)="Eliminar(faltante); reset()" class="btn btn-warning"><i class="material-icons">schedule</i></button>
+        <td *ngIf="faltante.disponible ==false"  ><button type="button"  (click)="ActualizarDisponible(faltante, faltante.disponible=true); reset()" class="btn btn-success"><i class="material-icons">done</i></button>
+
+
+    </tr>
+    </tbody>
+</table>
+
+    </ng-template>
+  </li>
+
+
+<!-- Productos Disponibles -->
+  <li [ngbNavItem]="3">
+    <a class="d-flex justify-content-center"(click)="cargarLists()" ngbNavLink>Disponibles</a>
+    <ng-template ngbNavContent>
+      <label for="formGroupExampleInput" class="form-label m-2 ">Buscar producto</label>
+      <input id="search" #SearchProducto [(ngModel)]="searchValue" name="searchValue"  type="text" class="form-control col-md-12" id="formGroupExampleInput" placeholder="Escriba el nombre del producto aquí">
+
+<div *ngIf="ProductosFaltantes==false" class="alert alert-info m-5" role="alert">
+  Aun no hay productos disponibles en esta lista
+</div>
+
+<table *ngIf="ProductosFaltantes!=false" class="table table-striped  text-center">
+  <thead>
+  <tr>
+
+    <th scope="col">Producto</th>
+    <th scope="col">Codigo</th>
+    <th scope="col">Pendiente</th>
+    <th scope="col">No hay</th>
+
+  </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let faltante of ProductosFaltantes | orderBy:'Description'   | searchFilter: searchValue; index as i">
+
+      <td  *ngIf="faltante.disponible==true && faltante.Quantity>0"  > <span class="badge bg-success">{{ faltante.Description }}</span> </td>
+      <td  *ngIf="faltante.disponible==true && faltante.Quantity<=0"  > <span class="badge bg-danger">{{ faltante.Description }}</span> </td>
+      <td *ngIf="faltante.disponible ==true"  ><p>{{ faltante.ItemLookupCode }}</p></td>
+      <td *ngIf="faltante.disponible ==true"   ><button type="button"  (click)="Eliminar(faltante); reset()" class="btn btn-warning"><i class="material-icons">schedule</i></button>
+      <td *ngIf="faltante.disponible ==true"  ><button type="button"  (click)="ActualizarDisponible(faltante, faltante.disponible=false); reset()" class="btn btn-danger"><i class="material-icons">close</i></button>
+
+    </tr>
+    </tbody>
+</table>
+
+    </ng-template>
+  </li>
+
+</ul>
+
+<div [ngbNavOutlet]="nav" class="mt-2"></div>

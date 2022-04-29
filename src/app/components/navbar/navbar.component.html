@@ -1,0 +1,95 @@
+<nav class="navbar  navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <button  class="navbar-toggler" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul *ngIf="isLogged || UserTemp.IsLogged "   class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" routerLink="/home">Inicio <i class="fas fa-home"></i></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" routerLink="/inicio">Listado Top <i class="fas fa-chart-bar"></i></a>
+        </li>
+
+        <li *ngIf="user.Rol==4 || UserTemp.Rol==4 || UserTemp.Rol==3 || user.Rol==3 " class="nav-item dropdown">
+          <a class="nav-link active nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Analisis Top <i class="fas fa-stream"></i></a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li ><a class="dropdown-item" (click)="IrTopAnalisis(1)">Top 500   <i class="fas fa-list"></i></a></li>
+            <li ><a class="dropdown-item" (click)="IrTopAnalisis(2)" >Top 300       <i class="fas fa-list"></i></a></li>
+
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" (click)="Logout()" routerLink="/login"> Salir <i class="fas fa-user-slash"></i></a>
+        </li>
+
+        <li *ngIf="user.Rol==1 || UserTemp.Rol==1 || UserTemp.Rol==3 " class="nav-item dropdown">
+          <a class="nav-link active nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Admin<i class="fas fa-user-lock"></i></a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item"  routerLink='/tablaPasillos'>Asignar Pasillo <i class="fas fa-list"></i></a></li>
+            <li><a class="dropdown-item" routerLink='/registrar' >Registrar Usuario <i class="fas fa-user-plus"></i></a></li>
+            <li><a class="dropdown-item" routerLink='/usuarios' >Usuarios <i class="fas fa-users"></i></a></li>
+            <li><a class="dropdown-item" routerLink="/Estadisticas" >Estadisticas <i class="fas fa-chart-bar"></i></a></li>
+            <li *ngIf="user.Rol==3 || UserTemp.Rol==3 " ><a class="dropdown-item" routerLink="/Tablero" >Tablero Administrativo <i class="fas fa-chart-pie"></i></a></li>
+          </ul>
+        </li>
+
+        <!-- <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Dropdown
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </li> -->
+        <li>
+
+          <h5 class=" d-flex justify-content-center mt-2 " > <span class="badge bg-primary">Sistema de Medición de Productos</span></h5>
+        </li>
+
+
+        <h6 class=" px-5 mt-2" >Usuario: <strong>{{UserTemp.NombreCompleto}}</strong> </h6>
+      </ul>
+      <!-- <form class="d-flex">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form> -->
+    </div>
+    <h3 *ngIf="isLogged || UserTemp.IsLogged "  class="mt-2">Colonial #{{UserTemp.StoreId}}</h3>
+  </div>
+</nav>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"><span class="badge bg-primary">Sistema de Medición de Productos</span></h5>
+        <h6 class=" px-5 mt-2" >Usuario: <strong>{{UserTemp.NombreCompleto}}</strong> </h6>
+
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <button type="button" routerLink="/home" class=" m-1 btn btn-secondary col-4" data-bs-dismiss="modal">Inicio <i class="fas fa-home"></i></button>
+        <button *ngIf="user.Rol==1 || UserTemp.Rol==1 || UserTemp.Rol==3 " type="button"  routerLink='/tablaPasillos' class=" m-1 btn btn-secondary " data-bs-dismiss="modal">Asignar Pasillo <i class="fas fa-list"></i></button>
+        <button *ngIf="user.Rol==1 || UserTemp.Rol==1 || UserTemp.Rol==3 " type="button"  routerLink='/registrar' class=" m-1 btn btn-secondary " data-bs-dismiss="modal">Registrar Usuario <i class="fas fa-user-plus"></i></button>
+        <button type="button" (click)="Logout()" routerLink="/login" class=" m-1 btn btn-secondary " data-bs-dismiss="modal">Salir <i class="fas fa-user-slash"></i></button>
+        <button *ngIf="user.Rol==1 || UserTemp.Rol==1 || UserTemp.Rol==3 " type="button"  routerLink="/usuarios" class=" m-1 btn btn-secondary " data-bs-dismiss="modal">Usuarios <i class="fas fa-users"></i></button>
+        <button *ngIf="user.Rol==1 || UserTemp.Rol==1 || UserTemp.Rol==3 " type="button"  routerLink="/Estadisticas" class=" m-1 btn btn-secondary " data-bs-dismiss="modal">Estadisticas <i class="fas fa-chart-bar"></i></button>
+        <button *ngIf="user.Rol==3 || UserTemp.Rol==3 " type="button"  routerLink="/Estadisticas" class=" m-1 btn btn-secondary " data-bs-dismiss="modal">Tablero Administrativo <i class="fas fa-chart-pie"></i></button>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+
+      </div>
+    </div>
+  </div>
+</div>

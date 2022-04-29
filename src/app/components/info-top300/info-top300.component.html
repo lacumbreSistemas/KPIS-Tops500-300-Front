@@ -1,0 +1,123 @@
+
+<app-navbar ></app-navbar>
+<ngx-spinner></ngx-spinner>
+<h2 *ngIf="IdMedicion===2" class="text-center">Análisis Top 300</h2>
+<h2 *ngIf="IdMedicion===1" class="text-center">Análisis Top 500</h2>
+<div *ngIf="IdMedicion===1" class="alert alert-warning text-center" role="alert">
+  <i class="fas fa-exclamation-triangle"></i>   Para visualizar el Top 500 debe hacerlo en horas de 7 am a 9 pm ó 3 pm a 6 pm, intérvalo de tiempo donde las transacciones están bajas. <br>
+  Si se tarda en cargar el contenido recargue la página y seleccione nuevamente la opción del Top 500 en el apartado "Analisis Top" en la parte de arriba.
+</div>
+
+ <div class="card ">
+  <div class="card-header text-center">
+    Ingrese el numero de tienda y los intérvalos de fecha para cargar la información
+  </div>
+  <div class="card-body">
+
+    <form (ngSubmit)="GetData(date1.value, date2.value)" class="d-flex justify-content-center" >
+      <div class="row">
+        <div class="col-lg-3 m-2 justify-content-center">
+          <label for="formGroupExampleInput" class="form-label">Fecha Inicio</label>
+          <input #date1  type="date" class="form-control" placeholder="First name" aria-label="First name">
+        </div>
+        <div class="col-lg-3 m-2 justify-content-center">
+          <label for="formGroupExampleInput" class="form-label">Fecha Final</label>
+
+          <input #date2 type="date" class="form-control" placeholder="Last name" aria-label="Last name">
+        </div>
+
+
+        <div class="col-lg-3 m-2 justify-content-center">
+          <label for="formGroupExampleInput" class="form-label">Seleccione la tienda</label>
+
+          <select (change)="getStoreID($event.target.value)" class="form-select" aria-label="Default select example">
+            <option [value]=0 selected>Tienda</option>
+            <option [value]=1>Col#1</option>
+            <option [value]=2>Col#2</option>
+            <option [value]=3>Col#3</option>
+            <option [value]=4>Col#4</option>
+          </select>
+        </div>
+
+
+
+
+
+
+        <div class="col-lg-3 m-2 justify-content-center">
+          <button type="submit" class="btn btn-success">Cargar Data <i class="fas fa-database"></i></button>
+        </div>
+        <div class="col-lg-3 m-2 justify-content-center">
+          <button (click)="reload()" type="submit" class="btn btn-primary">Actualizar <i class="fas fa-sync-alt"></i></button>
+        </div>
+
+      </div>
+
+    </form>
+
+
+  </div>
+</div>
+
+<form class="m-5">
+
+    <div class="form-group form-inline">
+        Busque por nombre <input  #SearchProducto [(ngModel)]="searchValue" name="searchValue" class="form-control ml-2" type="text" >
+    </div>
+  </form>
+  <div class="col-lg-3 m-2 justify-content-center">
+    <button [disabled]="this.Importados.length===0" (click)="exportAsXLSX()" type="submit" class="btn btn-secondary">Descargar <i class="fas fa-file-download"></i></button>
+  </div>
+
+  <div class="fixTableHead">
+
+  <table cellspacing="0" style="border-spacing: 0;"
+        class="table table-striped  text-center">
+    <thead>
+    <tr >
+      <th scope="col">#</th>
+      <th scope="col">Item</th>
+      <th scope="col">Descripcion</th>
+      <th scope="col">Departamento</th>
+      <th scope="col">Categoria</th>
+      <th scope="col">Suma Total de Ventas</th>
+      <th scope="col">Cantidad en Sistema</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let importado of Importados  | searchFilter: searchValue;;  index as i " >
+      <th scope="row">{{i+1}}</th>
+    <td>
+        {{importado.ItemLookupCode}}
+    </td>
+    <td>{{importado.Description}}</td>
+    <td>{{importado.Department}}</td>
+    <td>{{importado.Category}}</td>
+    <td > {{importado.Venta}} </td>
+    <td *ngIf="importado.CantidadSistema>0"> <span class="badge bg-success">{{importado.CantidadSistema}}</span> </td>
+    <td *ngIf="importado.CantidadSistema<=0">   <span class="badge bg-danger">{{importado.CantidadSistema }}</span> </td>
+
+  </tr>
+    </tbody>
+  </table>
+</div>
+<div class="row m-5 justify-content-center" *ngIf="this.hayDatos">
+  <h3 *ngIf="IdMedicion===1" class="text-center">Top 10 Productos</h3>
+  <h3 *ngIf="IdMedicion===2" class="text-center">Top 10 Importados</h3>
+
+  <div  class=" Chart col-6">
+
+          <canvas
+                  baseChart
+                  [datasets]="barChartData"
+                  [labels]="barChartLabels"
+                  [options]="barChartOptions"
+                  [legend]="barChartLegend"
+                  [chartType]="barChartType">
+          </canvas>
+
+      </div>
+ </div>
+ <br>
+ <br>

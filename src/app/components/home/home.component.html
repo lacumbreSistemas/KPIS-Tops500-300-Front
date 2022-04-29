@@ -1,0 +1,13 @@
+<app-navbar ></app-navbar>
+<img src="assets\images\LogoColonial.png"  class=" mt-5 rounded mx-auto d-block" alt="...">
+
+<h4 class="text-center mt-5">Bienvenido al Sistema KPI de Supermercados Colonial</h4>
+<h5 class="text-center ">Por favor elija un listado Top para conteo:</h5>
+<div class="container d-flex justify-content-center">
+    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+        <button type="button" (click)="EnviarIdConteo(1)" routerLink="/inicio" class="btn btn-primary m-2">Top 500</button>
+        <button  type="button" (click)="EnviarIdConteo(2)" routerLink="/inicio"  class="btn btn-success m-2">Top 300 Importados</button>
+      </div>
+
+
+</div>

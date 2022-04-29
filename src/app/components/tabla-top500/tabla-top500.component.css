@@ -1,0 +1,69 @@
+.mat-toolbar {
+  background: rgb(1, 68, 255);
+  color: #fff
+}
+
+
+table {
+  width: 100%;
+  background: rgb(255, 255, 255);
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+.sinpadding  {
+  padding: 0;
+}
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+td, th {
+  width: 25%;
+  padding:2px;
+}
+h5 {
+  color: rgb(255, 255, 255);  
+}
+h6 {
+  color: gray;  
+}
+
+.inputColor{
+    background-color: rgb(192, 192, 192);
+}
+
+
+
+@media only screen and (min-width: 315px) and (max-width: 800px)  {
+  p {
+   font-size: small;
+  }
+
+  .btn {
+
+    font-size: 10px;
+  }
+  
+}
+
+
+
+  .loading-container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .loading {
+    height: 189px;
+    width: 189px;
+    position: relative;
+    margin: 0 15px 15px 0;
+    padding: 15px;
+    border: 1px #ccc solid;
+    border-radius: 4px;
+  }
+  
+  .loading p {
+    margin: 0 0 10px 0;
+  }

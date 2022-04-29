@@ -1,0 +1,13 @@
+a{
+  background-color: gray;
+}
+
+.Logo{
+  width: 300px;
+  height: auto;
+
+  display: block;
+margin-left: auto;
+margin-right: auto;
+  
+}

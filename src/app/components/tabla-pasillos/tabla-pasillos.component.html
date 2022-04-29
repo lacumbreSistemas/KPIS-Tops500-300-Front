@@ -1,0 +1,160 @@
+<app-navbar ></app-navbar>
+<div class=" m-3 d-flex justify-content-end">
+  <button type="button" routerLink="/addProductos" class="btn btn-primary "> <i class="fas fa-plus"></i> Actualizar Top 500</button>
+  </div>
+  <label for="formGroupExampleInput" class="form-label m-2 ">Buscar producto</label>
+  <input  #SearchProducto id="search" [(ngModel)]="searchValue" name="searchValue"  type="text" class="form-control col-md-12" id="formGroupExampleInput" placeholder="Escriba el nombre del producto aquí">
+
+
+
+  <h6 class="text-center mt-3">Hay {{ProductosTop.length}} productos en total</h6>
+
+  <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs d-flex justify-content-center mt-2">
+    <li [ngbNavItem]="1">
+      <a class="text-center" ngbNavLink>Sin Pasillo</a>
+      <ng-template ngbNavContent>
+
+        <table cellpadding=0 cellspacing=0 class="m-5" style="border-spacing: 0;"
+          class="table table-striped  text-center">
+    <thead>
+    <tr>
+
+      <th scope="col">Producto</th>
+      <th scope="col">Código</th>
+      <th scope="col">Ubicación</th>
+
+    </tr>
+
+  </thead>
+    <div *ngIf="ProductosTop.Pasillo!=null" class="alert alert-info m-5" role="alert">
+      Aun no hay productos faltantes en esta lista
+    </div>
+
+    <tbody   >
+
+      <tr *ngFor="let producto of ProductosTop | orderBy:'Description'  | searchFilter: searchValue; index as i" >
+
+        <td  *ngIf="producto.PasilloId===null"><p>{{ producto.Description }}</p></td>
+        <td  *ngIf="producto.PasilloId===null" ><p>{{ producto.ItemLookupCode }}</p></td>
+        <td  *ngIf="producto.PasilloId===null" ><button type="button" (click)="setProducto(producto)"  class="btn btn-danger " data-bs-toggle="modal" data-bs-target="#AsignarPasillo"><i class="fas fa-check"></i></button>
+
+
+      </tr>
+      </tbody>
+  </table >
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="2">
+      <a class="text-center" (click)="getProductosConPasillo()" ngbNavLink>Con Pasillo</a>
+
+      <ng-template ngbNavContent>
+        <table cellpadding=0 cellspacing=0 style="border-spacing: 0;"
+        class="table table-striped  text-center">
+  <thead>
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Producto</th>
+    <th scope="col">Código</th>
+    <th scope="col">Pasillo</th>
+    <th scope="col">Actualizar</th>
+
+  </tr>
+
+  </thead>
+  <tbody class="mt-5"  >
+
+    <tr *ngFor="let producto of ProductosConPasillo  |  orderBy:'Description' | searchFilter: searchValue |removeDuplicatesProducts  ; index as i" >
+      <th scope="row">{{ i + 1 }}</th>
+      <td class="col"   ><p>{{ producto.Description }}</p></td>
+      <td class="col"  ><p>{{ producto.ItemLookupCode }}</p></td>
+      <td class="col"  ><p>{{ producto.Pasillo}}</p></td>
+      <td class="col"   ><button type="button" (click)="setProducto(producto)"  class="btn btn-success " data-bs-toggle="modal" data-bs-target="#ActualizarPasillo"><i class="fas fa-check"></i></button>
+
+
+    </tr>
+    </tbody>
+  </table>
+      </ng-template>
+    </li>
+
+  </ul>
+
+  <div [ngbNavOutlet]="nav" class="mt-2"></div>
+
+
+
+
+
+  <!-- Modal Asignar Pasillo -->
+  <div class="modal fade" id="AsignarPasillo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" id="exampleModalLabel">Actualizar Ubicacion</h3>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" *ngIf="ModalProduct">
+          <h5 >Asignar Ubicacion</h5>
+          <form [formGroup]="PasilloInfo">
+          <div class="row">
+            <div class="col-md-12">
+              <label for="inputState"class="form-label">Nombre Producto</label>
+              <input formControlName="ProductoNombre"   type="text" [ngModel]="NombreProducto" name="NombreProducto"  class="form-control" placeholder="First name" aria-label="First name">
+            </div>
+            <div class="col-md-12 ">
+              <label for="inputState" class="form-label">Elegir Ubicacion</label>
+              <select (change)='CapturarIDPasillo($event.target.value)' id="inputState" class="form-select">
+                <option [value]="0"  selected>Escoja un pasillo</option>
+                <option value="{{pasillo.id}}" *ngFor="let pasillo of ProductosPasillo; let i=index">{{pasillo.Pasillo}}</option>
+
+              </select>
+            </div>
+          </div>
+        </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" data-bs-dismiss="modal" (click)="GuardarProductoPasillo()" class="btn btn-primary">Guardar Cambios</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <!-- Modal Actualizar Pasillo -->
+  <div class="modal fade" id="ActualizarPasillo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" id="exampleModalLabel">Actualizar Ubicacion</h3>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" *ngIf="ModalProduct">
+          <form [formGroup]="PasilloInfo">
+          <div class="row">
+            <div class="col-m-6 mt-2">
+              <label for="inputState"class="form-label">Nombre Producto</label>
+              <input formControlName="ProductoNombre"   type="text" [ngModel]="NombreProducto" name="NombreProducto"  class="form-control" placeholder="First name" aria-label="First name">
+            </div>
+            <div class="col-m-6 mt-2 ">
+              <label for="inputState" class="form-label">Elegir Ubicacion</label>
+              <h6>Ubicación actual: {{NombrePasillo}}</h6>
+              <select (change)='CapturarIDPasillo($event.target.value)' id="inputState" class="form-select">
+
+                <option [value]="0"   selected>Escoja el pasillo</option>
+                <option  value="{{pasillo.id}}" *ngFor="let pasillo of ProductosPasillo; let i=index">{{pasillo.Pasillo}}</option>
+
+              </select>
+            </div>
+          </div>
+        </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" data-bs-dismiss="modal" (click)="UpdateProductoPasillo()" class="btn btn-primary">Guardar Cambios</button>
+        </div>
+      </div>
+    </div>
+  </div>

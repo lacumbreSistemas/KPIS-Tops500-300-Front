@@ -1,0 +1,73 @@
+
+<app-navbar ></app-navbar>
+ <ul ngbNav #nav="ngbNav" class="nav-tabs justify-content-center mt-5">
+  <li ngbNavItem>
+    <a ngbNavLink>Top 500</a>
+    <ng-template ngbNavContent>
+
+      <button *ngIf="!Loading" [disabled]="valueProducts === ''"  (click)="AddProductoTop(newHero.value, IsTop500=true, IsTop300=false)" type="button" class="btn btn-success m-lg-5">Enviar <i class="fas fa-check"></i> </button>
+
+
+  <div class="row">
+    <div class="col-sm-1">
+  <div *ngIf="Loading" class="spinner-border text-primary text-center m-2" role="status">
+    <span class="sr-only">Loading...</span>
+
+  </div>
+</div>
+<div class="col-sm-4 mt-2">
+  <div *ngIf="Loading" class="alert alert-primary" role="alert">
+    Espere mientras se ejecuta el proceso
+  </div>
+
+
+</div>
+</div>
+<textarea #newHero id="data" [(ngModel)]="valueProducts" style="height: 500px;" class="form-control  justify-content-center" placeholder="Añada aqui el listado de productos Top 500 (sin comas ni comillas ni espacios)" id="floatingTextarea"></textarea>
+
+
+
+
+
+
+
+
+
+    </ng-template>
+  </li>
+  <li ngbNavItem>
+    <a ngbNavLink>Top 300</a>
+    <ng-template ngbNavContent>
+
+      <button *ngIf="!Loading" [disabled]="valueProducts === ''"  (click)="AddProductoTop(newHero.value, IsTop500=false, IsTop300=true)" type="button" class="btn btn-success m-lg-5">Enviar <i class="fas fa-check"></i> </button>
+
+
+  <div class="row">
+    <div class="col-sm-1">
+  <div *ngIf="Loading" class="spinner-border text-primary text-center m-2" role="status">
+    <span class="sr-only">Loading...</span>
+
+  </div>
+</div>
+<div class="col-sm-4 mt-2">
+  <div *ngIf="Loading" class="alert alert-primary" role="alert">
+    Espere mientras se ejecuta el proceso
+  </div>
+
+
+</div>
+</div>
+<textarea #newHero id="data" [(ngModel)]="valueProducts" style="height: 500px;" class="form-control  justify-content-center" placeholder="Añada aqui el listado de productos Top 300 (sin comas ni comillas ni espacios)" id="floatingTextarea"></textarea>
+
+
+
+
+
+
+
+
+
+    </ng-template>
+  </li>
+</ul>
+<div [ngbNavOutlet]="nav"></div>

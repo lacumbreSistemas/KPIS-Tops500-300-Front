@@ -1,0 +1,52 @@
+<app-navbar ></app-navbar>
+<div class="animate__animated animate__fadeInUp">
+  <ul let ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs m-2  ">
+
+    <select [disabled]="NoDepartment" (change)="GetIdDepartamento($event.target.value)"  class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+      <option  [value]="0" selected>Departamentos</option>
+
+      <option  *ngFor="let producto of ProductosTop | removeduplicates; let i = index " [value]="producto.ID"  >
+
+        <a><p>{{producto.Name}}</p></a>
+
+      </option>
+
+
+
+    </select>
+
+
+    <select [disabled]="NoPasillos"  (change)="GetIdPasillo($event.target.value)"  class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+
+      <option [value]=0 selected  >
+          <a><p>Pasillos ó Ubicaciones</p></a>
+
+    </option>
+      <option  *ngFor="let pasillo of ProductosPasillo | removePasillos; let i = index " [value]="pasillo.id"  >
+
+        <a ><p>{{pasillo.Pasillo}}</p></a>
+
+    </option>
+
+
+
+    </select>
+      <!-- <li *ngFor="let producto of ProductosTop | removeduplicates; let i = index " [ngbNavItem]="i"  >
+        <a (click)="GetInfo(producto.ID)"  ngbNavLink><h3>{{producto.Name}}</h3></a>
+
+      </li> -->
+
+
+
+
+
+    </ul>
+
+
+    <app-tabla-top500  [DepId]="IdDepartamento"></app-tabla-top500>
+
+
+  </div>
+
+
+  

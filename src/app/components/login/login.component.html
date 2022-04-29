@@ -1,0 +1,24 @@
+<div class="HeaderColor text-center mt-2"><h1>Sistema Top 500 de Supermercados Colonial</h1></div>
+
+<div class="wrapper fadeInDown ">
+    <div id="formContent">
+      <!-- Tabs Titles -->
+  
+      <!-- Icon -->
+      <br>
+      
+      <div class="fadeIn first">
+        <img src="assets\images\LogoColonial.png" id="icon" alt="User Icon" />
+      </div>
+  
+      <!-- Login Form -->
+      <form [formGroup]="GetUser"  (ngSubmit)="sendUser(GetUser.value)">
+        <input formControlName="Usuario"  type="text" id="user" class="fadeIn second" [ngModel]="LocalUser" name="LocalUser" placeholder="Usuario">
+        <input formControlName="Password" type="password" id="password" class="fadeIn third" [ngModel]="LocalPassword" name="LocalPassword" placeholder="Contraseña">
+        <input type="submit" class="fadeIn fourth" value="Ingresar">
+      </form>
+  
+      
+  
+    </div>
+  </div>
